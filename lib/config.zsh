@@ -3,12 +3,14 @@
 # Configuration and validation for zsh-ai
 
 # Set default values for configuration
-: ${ZSH_AI_PROVIDER:="anthropic"}  # Default to anthropic for backwards compatibility
+: ${ZSH_AI_PROVIDER:="qwen"}  # Default to anthropic for backwards compatibility
 : ${ZSH_AI_OLLAMA_MODEL:="llama3.2"}  # Popular fast model
 : ${ZSH_AI_OLLAMA_URL:="http://localhost:11434"}  # Default Ollama URL
 : ${ZSH_AI_GEMINI_MODEL:="gemini-2.5-flash"}  # Fast Gemini 2.5 model
 : ${ZSH_AI_OPENAI_MODEL:="gpt-4o"}  # Default to GPT-4o
 : ${ZSH_AI_OPENAI_URL:="https://api.openai.com/v1/chat/completions"}  # Default to OpenAI
+: ${ZSH_AI_QWEN_MODEL:="qwen3-max"}  # Default to qwen3-max
+: ${ZSH_AI_QWEN_URL:="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"}  # Default to Qwen API
 : ${ZSH_AI_ANTHROPIC_MODEL:="claude-haiku-4-5"}  # Default Anthropic model
 : ${ZSH_AI_ANTHROPIC_URL:="https://api.anthropic.com/v1/messages"}  # Default Anthropic URL
 : ${ZSH_AI_GROK_MODEL:="grok-4-1-fast-non-reasoning"}  # Default Grok model
@@ -22,8 +24,8 @@
 
 # Provider validation
 _zsh_ai_validate_config() {
-    if [[ "$ZSH_AI_PROVIDER" != "anthropic" ]] && [[ "$ZSH_AI_PROVIDER" != "ollama" ]] && [[ "$ZSH_AI_PROVIDER" != "gemini" ]] && [[ "$ZSH_AI_PROVIDER" != "openai" ]] && [[ "$ZSH_AI_PROVIDER" != "grok" ]] && [[ "$ZSH_AI_PROVIDER" != "mistral" ]]; then
-        echo "zsh-ai: Error: Invalid provider '$ZSH_AI_PROVIDER'. Use 'anthropic', 'ollama', 'gemini', 'openai', 'grok', or 'mistral'."
+    if [[ "$ZSH_AI_PROVIDER" != "anthropic" ]] && [[ "$ZSH_AI_PROVIDER" != "ollama" ]] && [[ "$ZSH_AI_PROVIDER" != "gemini" ]] && [[ "$ZSH_AI_PROVIDER" != "qwen" ]] && [[ "$ZSH_AI_PROVIDER" != "openai" ]] && [[ "$ZSH_AI_PROVIDER" != "grok" ]] && [[ "$ZSH_AI_PROVIDER" != "mistral" ]]; then
+        echo "zsh-ai: Error: Invalid provider '$ZSH_AI_PROVIDER'. Use 'anthropic', 'ollama', 'gemini', 'openai', 'qwen', 'grok', or 'mistral'."
         return 1
     fi
 
@@ -46,6 +48,14 @@ _zsh_ai_validate_config() {
         if [[ -z "$OPENAI_API_KEY" && -z "$ZSH_AI_OPENAI_API_KEY" && "$ZSH_AI_OPENAI_URL" == "https://api.openai.com/v1/chat/completions" ]]; then
             echo "zsh-ai: Warning: OPENAI_API_KEY not set. Plugin will not function."
             echo "zsh-ai: Set OPENAI_API_KEY or use ZSH_AI_PROVIDER=ollama for local models."
+            return 1
+        fi
+    elif [[ "$ZSH_AI_PROVIDER" == "qwen" ]]; then
+        # Only require API key when using the default Qwen URL
+        # Custom URLs (local servers, proxies) may not need authentication
+        if [[ -z "$ZSH_AI_QWEN_API_KEY" ]]; then
+            echo "zsh-ai: Warning: ZSH_AI_QWEN_API_KEY not set. Plugin will not function."
+            echo "zsh-ai: Set ZSH_AI_QWEN_API_KEY or use ZSH_AI_PROVIDER=ollama for local models."
             return 1
         fi
     elif [[ "$ZSH_AI_PROVIDER" == "grok" ]]; then
