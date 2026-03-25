@@ -16,9 +16,6 @@ _zsh_ai_query_qwen() {
     # Prepare the JSON payload - escape quotes in the query
     local escaped_query=$(_zsh_ai_escape_json "$query")
 
-    # Qwen DashScope compatible-mode API uses max_tokens
-    local token_param="max_tokens"
-
     local json_payload=$(cat <<EOF
 {
     "model": "${ZSH_AI_QWEN_MODEL}",
@@ -32,20 +29,15 @@ _zsh_ai_query_qwen() {
             "content": "$escaped_query"
         }
     ],
-    "$token_param": 256,
+    "max_tokens": 256,
     "temperature": 0.3
 }
 EOF
 )
     
-    # Call the API - only add auth header if API key is set
-    # ZSH_AI_QWEN_API_KEY takes precedence (useful for LiteLLM and other proxies)
-    local auth_args=()
-    local api_key="${ZSH_AI_QWEN_API_KEY:-$QWEN_API_KEY}"
-    [[ -n "$api_key" ]] && auth_args=(--header "Authorization: Bearer $api_key")
-
+    # Call the API
     response=$(curl -s "${ZSH_AI_QWEN_URL}" \
-        "${auth_args[@]}" \
+        --header "Authorization: Bearer $QWEN_API_KEY" \
         --header "content-type: application/json" \
         --data "$json_payload" 2>&1)
     
@@ -53,9 +45,6 @@ EOF
         echo "Error: Failed to connect to QWEN API"
         return 1
     fi
-    
-    # Debug: Uncomment to see raw response
-    # echo "DEBUG: Raw response: $response" >&2
     
     # Extract the content from the response
     # Try using jq if available, otherwise fall back to sed/grep
