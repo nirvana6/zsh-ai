@@ -96,6 +96,15 @@ export ZSH_AI_PROVIDER="grok"
 
 [Get your API key →](https://console.x.ai/)
 
+### Qwen
+
+```bash
+export QWEN_API_KEY="your-api-key-here"
+export ZSH_AI_PROVIDER="qwen"
+```
+
+[Get your API key →](https://dashscope.console.aliyun.com/api-key)
+
 ### OpenAI-Compatible Servers
 
 Works with LM Studio, LocalAI, llama.cpp, vLLM, and other local servers:
@@ -172,7 +181,7 @@ All settings with their default values:
 
 ```bash
 # Provider selection
-export ZSH_AI_PROVIDER="anthropic"  # anthropic, openai, gemini, ollama, mistral, grok
+export ZSH_AI_PROVIDER="anthropic"  # anthropic, openai, gemini, ollama, mistral, grok, qwen
 
 # Anthropic
 export ZSH_AI_ANTHROPIC_MODEL="claude-haiku-4-5"
@@ -197,6 +206,10 @@ export ZSH_AI_MISTRAL_URL="https://api.mistral.ai/v1/chat/completions"
 # Grok
 export ZSH_AI_GROK_MODEL="grok-4-1-fast-non-reasoning"
 export ZSH_AI_GROK_URL="https://api.x.ai/v1/chat/completions"
+
+# Qwen
+export ZSH_AI_QWEN_MODEL="qwen3-max"
+export ZSH_AI_QWEN_URL="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
 ```
 
 ## Advanced Configuration

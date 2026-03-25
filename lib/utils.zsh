@@ -37,6 +37,8 @@ _zsh_ai_query() {
         _zsh_ai_query_gemini "$query"
     elif [[ "$ZSH_AI_PROVIDER" == "openai" ]]; then
         _zsh_ai_query_openai "$query"
+    elif [[ "$ZSH_AI_PROVIDER" == "qwen" ]]; then
+        _zsh_ai_query_qwen "$query"
     elif [[ "$ZSH_AI_PROVIDER" == "grok" ]]; then
         _zsh_ai_query_grok "$query"
     elif [[ "$ZSH_AI_PROVIDER" == "mistral" ]]; then
@@ -74,6 +76,8 @@ zsh-ai() {
             echo "Gemini model: $ZSH_AI_GEMINI_MODEL"
         elif [[ "$ZSH_AI_PROVIDER" == "openai" ]]; then
             echo "OpenAI model: $ZSH_AI_OPENAI_MODEL"
+        elif [[ "$ZSH_AI_PROVIDER" == "qwen" ]]; then
+            echo "Qwen model: $ZSH_AI_QWEN_MODEL"
         elif [[ "$ZSH_AI_PROVIDER" == "grok" ]]; then
             echo "Grok model: $ZSH_AI_GROK_MODEL"
         elif [[ "$ZSH_AI_PROVIDER" == "mistral" ]]; then
