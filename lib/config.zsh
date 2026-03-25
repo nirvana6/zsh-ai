@@ -51,11 +51,9 @@ _zsh_ai_validate_config() {
             return 1
         fi
     elif [[ "$ZSH_AI_PROVIDER" == "qwen" ]]; then
-        # Only require API key when using the default Qwen URL
-        # Custom URLs (local servers, proxies) may not need authentication
-        if [[ -z "$ZSH_AI_QWEN_API_KEY" ]]; then
-            echo "zsh-ai: Warning: ZSH_AI_QWEN_API_KEY not set. Plugin will not function."
-            echo "zsh-ai: Set ZSH_AI_QWEN_API_KEY or use ZSH_AI_PROVIDER=ollama for local models."
+        if [[ -z "$QWEN_API_KEY" ]]; then
+            echo "zsh-ai: Warning: QWEN_API_KEY not set. Plugin will not function."
+            echo "zsh-ai: Set QWEN_API_KEY or use ZSH_AI_PROVIDER=ollama for local models."
             return 1
         fi
     elif [[ "$ZSH_AI_PROVIDER" == "grok" ]]; then
