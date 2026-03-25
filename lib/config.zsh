@@ -3,7 +3,7 @@
 # Configuration and validation for zsh-ai
 
 # Set default values for configuration
-: ${ZSH_AI_PROVIDER:="qwen"}  # Default to anthropic for backwards compatibility
+: ${ZSH_AI_PROVIDER:="anthropic"}  # Default to anthropic for backwards compatibility
 : ${ZSH_AI_OLLAMA_MODEL:="llama3.2"}  # Popular fast model
 : ${ZSH_AI_OLLAMA_URL:="http://localhost:11434"}  # Default Ollama URL
 : ${ZSH_AI_GEMINI_MODEL:="gemini-2.5-flash"}  # Fast Gemini 2.5 model
